@@ -1,0 +1,45 @@
+[project]
+name = "all-developer"
+version = "0.1.0"
+description = "Agent skill for the symbol of engineering"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "basedpyright>=1.31",
+    "codespell>=2.4",
+    "prek>=0.2",
+    "pytest>=8",
+    "ruff>=0.12",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["B", "D", "E", "F", "I", "N", "RUF", "SIM", "UP", "W"]
+ignore = ["D203", "D212"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D103"]
+
+[tool.basedpyright]
+include = ["scripts", "tests", "skills/all-developer/scripts"]
+typeCheckingMode = "standard"
+pythonVersion = "3.10"
+
+[tool.codespell]
+skip = "uv.lock,.venv,.git"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

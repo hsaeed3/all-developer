@@ -558,6 +558,16 @@ application in its window, the service through its real interface.
   `test`, `build`, `ci`, `chore` and `release`. Write the summary in the
   imperative mood, in lowercase, with no period at the end. Add `!` after the
   type or the scope for an incompatible change.
+- **Commit only with permission.** Do not commit, push, open a pull request,
+  merge, publish or release unless the person told you to do that step in
+  this task. Permission for one commit is not permission for the next one.
+  When the work is ready, leave it in the working tree, say so, and ask.
+- **No workaround for a missing answer.** If a step needs a confirmation, a
+  decision or an access that the person did not give, stop that step and say
+  what you need. Continue only with work that does not depend on it. Silence
+  is not consent, and a refusal from a tool or a setting is an answer. Never
+  take a different route to the same result because the person did not
+  answer or is away.
 - **Disclose AI work.** A pull request with AI-generated or AI-assisted
   content says so and names the tool and the exact model. A commit that an
   agent writes ends with one `Co-Authored-By:` trailer that names the model.

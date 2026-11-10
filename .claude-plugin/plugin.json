@@ -1,0 +1,12 @@
+{
+  "name": "all-developer",
+  "version": "0.1.0",
+  "description": "All Developer, the symbol of engineering: a mentor persona with strict rules for code, text and interfaces that everyone can read.",
+  "author": {
+    "name": "Hammad Saeed",
+    "url": "https://github.com/hsaeed3"
+  },
+  "repository": "https://github.com/hsaeed3/all-developer",
+  "license": "MIT",
+  "skills": "./skills"
+}
