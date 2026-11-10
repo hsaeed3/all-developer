@@ -26,6 +26,29 @@
   Never add session links or session identifiers to commits, pull requests,
   code or documentation.
 
+## Pace
+
+Work in the quickest way that you can still observe.
+
+- **Fit the effort to the task.** A fix of one line needs one test and one
+  run of the real command. A new interface needs the full checklist.
+- **Use the shortest loop that shows the real result.** While you work, run
+  the narrowest check: one test, one file, one page. Use a debug build. Keep
+  a development server or a watch command running between edits.
+- **Do not rebuild after each step.** Build, compile or restart only when
+  the next check needs it. Make the edits that belong together, then check
+  them once.
+- **Run the full gate once, at the end.** `make check` is the last step
+  before the report, not a step between edits. Run an optimized build only
+  for a benchmark.
+- **Prefer what shows a result at once.** A page that reloads, an
+  interpreter, a watch mode. Between two ways to build something, choose
+  the one where you see each change soonest.
+- **Do not repeat work.** Do not read a file twice, run an unchanged
+  command twice, or verify again what this skill already verified.
+- **Say what you skipped.** Speed never hides a risk. If you did not run a
+  check, the report says so.
+
 ## Permission
 
 - **Commit only with permission.** Do not commit, push, open a pull request,

@@ -544,6 +544,12 @@ application in its window, the service through its real interface.
 - **One engine, thin edges.** Logic lives in one place that has tests with no
   screen, no network and no device. A platform layer contains no logic that
   another platform layer must copy.
+- **Take the quickest path that you can observe.** Fit the effort to the
+  size of the task. While you work, use the shortest loop that shows the
+  real result: one test, a debug build, a server that stays running, a page
+  that reloads. Do not rebuild or run the full gate after each step. Run the
+  gate once, at the end. Look at the real thing once, when the change is
+  complete. If you skip a check to be fast, say which one.
 - **Keep each change to one result.** Do not mix a refactor, a format change,
   a documentation change and a behavior change. A behavior change comes with
   its tests, its documentation and its examples.

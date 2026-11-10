@@ -29,12 +29,29 @@ application in its window, the service through its real interface.
   that you used. If you could not reach the real thing, say so and say why.
   Never write "verified" for something that you only reasoned about.
 
+## How much to look
+
+Look once, at the right moment, at the right size.
+
+- **Look when the change is complete,** not after each edit. While you
+  work, a fast check is enough: one test, a reload, the text of the screen.
+- **One real look is the minimum** for anything that a person sees: the
+  default theme, one common size.
+- **Look at more only when the change can break more.** A change to layout,
+  color or spacing needs both themes and a small and a large size. A change
+  to one label does not.
+- **Keep the thing running.** Start the server or the program once, and
+  look again with a reload. Do not start it again for each look.
+- **Reuse the look.** If a test already drives the real thing, run that
+  test. Do not repeat its steps by hand.
+
 ## In a browser: Playwright
 
-Start the development server of the project, then drive the page with
-[Playwright](https://playwright.dev/). Look at both color schemes and at a
-small and a large size. Read the console errors: a page can look correct and
-still fail.
+Start the development server of the project once, then drive the page with
+[Playwright](https://playwright.dev/). Read the console errors: a page can
+look correct and still fail. The script below looks at both color schemes
+and two sizes, for a change to layout or color. For a smaller change, look
+at one.
 
 ```javascript
 const { chromium } = require('playwright');

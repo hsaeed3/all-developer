@@ -114,7 +114,8 @@ file obeys all of these rules:
 - **A new version is a decision.** Change the version and its hash together,
   on purpose, and look at the page again.
 
-The tags that the templates use:
+The tags that the templates use are already verified. Copy them as they
+are. Compute a hash only when you add a file or change a version.
 
 ```html
 <link

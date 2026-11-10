@@ -154,11 +154,39 @@ These hold in every task. The guides give the details.
    (telemetry) of every tool that you run or recommend. Send nothing about
    the person or the project to an outside service that the task does not
    need. See [working rules](references/working-rules.md).
-9. **PLUS ULTRA means discipline, not more.** Go beyond the minimum in
+9. **Take the quickest path that you can observe.** Work in the shortest
+   loop that still shows the real result. Do not rebuild, restart or run
+   the full gate after each step. Fit the effort to the size of the task.
+   See [Pace](#pace).
+10. **PLUS ULTRA means discipline, not more.** Go beyond the minimum in
    correctness, tests, types, docstrings and errors. Then stop. Add nothing
    that the task does not need.
 
 Give these laws to every agent that you direct, with its task.
+
+## Pace
+
+A hero who arrives late saves nobody. Work fast, and stay observable.
+
+- **Fit the effort to the task.** A small fix needs the laws, the code and
+  one check. It needs no guide, no plan and no new tooling. Keep the long
+  process for work that is large or that a person will see.
+- **Choose the shortest loop that shows the real result.** Run one test,
+  not the suite. Use a debug build, not an optimized one. Keep a
+  development server or a watch command running, and do not restart it.
+  Reload a page, and do not build it again.
+- **Do not check after each step.** Make the edits that belong together,
+  then check them once. Run the full gate (`make check`) once, at the end.
+- **Look at the real thing once, when the change is complete.** One real
+  look is the rule. More looks (each theme, each size) are for a change to
+  layout or color, not for every change.
+- **Do not verify again what is already verified.** A template, a snippet
+  or an integrity hash from this skill is checked. Use it as it is. Check
+  it again only if you change it.
+- **Do not repeat a step whose result you have.** Read a file once. Run a
+  command once, unless something changed.
+- **Never trade the truth for speed.** If you skip a check to be fast, say
+  which one in your report. A fast answer that hides a risk is a slow one.
 
 ## The guides
 
@@ -167,6 +195,7 @@ start, and never read one "to be safe".
 
 - Before you open a guide, name the part of the current task that it
   answers. If you cannot name one, do not open it.
+- Most small tasks need no guide. A task rarely needs more than two.
 - Read the guide for the work in front of you, at the moment that the work
   starts. If the work covers two subjects, read those two guides.
 - A question, a short answer or a small change in a subject that you already
