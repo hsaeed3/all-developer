@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>Artifact title</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.min.css"
+      integrity="sha384-L1dWfspMTHU/ApYnFiMz2QID/PlP1xCW9visvBdbEkOLkSSWsP6ZJWhPw6apiXxU"
+      crossorigin="anonymous"
+    >
+    <script
+      src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.11/dist/htmx.min.js"
+      integrity="sha384-2OatzQy1H+Zd/IIrjr1TcuDGqLXeHhbooAyJY1KdQMKnr4LZ22k31GBLdYKHmVjg"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      /* The tokens of this page. Change the look here, not on one element. */
+      :root {
+        --pico-font-size: 100%;
+        --pico-border-radius: 0.25rem;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>Artifact title</h1>
+        <p>One sentence that says what this page is for.</p>
+      </header>
+
+      <section aria-labelledby="action-title">
+        <h2 id="action-title">Action</h2>
+        <!-- The server answers with a piece of HTML, and htmx puts it into #greeting. -->
+        <form hx-post="/greeting" hx-target="#greeting" hx-swap="innerHTML">
+          <label for="name">Name</label>
+          <input id="name" name="name" autocomplete="name" required>
+          <button type="submit">Say hello</button>
+        </form>
+        <p id="greeting" role="status" aria-live="polite"></p>
+      </section>
+    </main>
+  </body>
+</html>

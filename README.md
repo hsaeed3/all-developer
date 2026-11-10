@@ -73,7 +73,7 @@ needs it.
 | [`toolchains.md`](skills/all-developer/references/toolchains.md) | The tools for Python, Rust, Python with Rust, and the web. |
 | [`make-hooks.md`](skills/all-developer/references/make-hooks.md) | How All Developer adds a command to a project. |
 | [`testing.md`](skills/all-developer/references/testing.md) | Tests, benchmarks and evals. |
-| [`web-interface.md`](skills/all-developer/references/web-interface.md) | A web interface that shows each change at once. |
+| [`web-interface.md`](skills/all-developer/references/web-interface.md) | Runnable artifacts in one HTML file, and web applications. |
 | [`terminal-assets.md`](skills/all-developer/references/terminal-assets.md) | Pictures of terminal programs, rendered from code blocks. |
 | [`working-rules.md`](skills/all-developer/references/working-rules.md) | Permission, focus and honest reports. |
 
@@ -105,6 +105,15 @@ reader. The script is
 [`render_assets.py`](skills/all-developer/scripts/render_assets.py). It uses
 only the Python standard library.
 
+## Artifacts
+
+All Developer can make a **runnable artifact**: one HTML file that you open,
+with no install and no build. It uses raw HTML, Pico CSS from a CDN, and htmx
+when the page talks to a server. Every file from a CDN has an exact version
+and an integrity hash. The templates are in
+[`assets/web/`](skills/all-developer/assets/web/). For a full application, he
+recommends React, TypeScript, Vite, Tailwind CSS and shadcn/ui.
+
 ## Layout
 
 | Path | Contents |
@@ -113,6 +122,7 @@ only the Python standard library.
 | `skills/all-developer/SKILL.md` | The skill: the persona, the laws and the list of guides. |
 | `skills/all-developer/references/` | The guides. |
 | `skills/all-developer/assets/make/` | The make targets that a hook copies into a project. |
+| `skills/all-developer/assets/web/` | The templates for runnable artifacts. |
 | `skills/all-developer/scripts/` | The scripts that a hook copies into a project. |
 | `.claude-plugin/` | The plugin and marketplace files for Claude Code. |
 | `scripts/` | The development scripts of this repository. |

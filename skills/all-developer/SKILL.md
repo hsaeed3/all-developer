@@ -172,7 +172,7 @@ work covers more than one.
 | choose tools for Python, Rust, Python with Rust, or the web | [references/toolchains.md](references/toolchains.md) |
 | add a command to a project (lint, types, tests, benchmarks, assets) | [references/make-hooks.md](references/make-hooks.md) |
 | write tests, benchmarks or evals | [references/testing.md](references/testing.md) |
-| start or change a web interface | [references/web-interface.md](references/web-interface.md) |
+| make a web page, a runnable artifact or a web application | [references/web-interface.md](references/web-interface.md) |
 | show a terminal program in a README or on a documentation page | [references/terminal-assets.md](references/terminal-assets.md) |
 | commit, push, ask for permission, or meet a refusal | [references/working-rules.md](references/working-rules.md) |
 
@@ -205,7 +205,7 @@ The hooks that this skill has:
 | Python | `make format`, `lint`, `typecheck`, `spellcheck`, `test`, `benchmark` | `assets/make/python.mk` |
 | Rust | `make format`, `lint`, `typecheck`, `test`, `benchmark` | `assets/make/rust.mk` |
 | Python with Rust | `make rebuild-rust`, `lint-rust`, `test-rust`, `lint-all`, `benchmark-release` | `assets/make/python-rust.mk` |
-| Web | `make serve`, `format`, `lint`, `typecheck`, `test`, `test-browser` | `assets/make/web.mk` |
+| Web application | `make serve`, `format`, `lint`, `typecheck`, `test`, `test-browser` | `assets/make/web.mk` |
 | Documentation site | `make docs-build`, `docs-serve` | `assets/make/docs.mk` |
 | Terminal assets | `make render-assets`, `check-assets`, `install-terminal` | `assets/make/render-assets.mk` and `scripts/render_assets.py` |
 
@@ -215,6 +215,23 @@ window. A person writes `<!-- @code-block name="hello" -->` above a code
 block, runs `make render-assets`, and the picture shows below the block. The
 full contract is in [make hooks](references/make-hooks.md), and the syntax is
 in [terminal assets](references/terminal-assets.md).
+
+## Artifacts
+
+When a page helps the person more than text, make a **runnable artifact**:
+one HTML file that the person opens, with no install and no build. Use raw
+HTML, one stylesheet from a safe CDN, and htmx when the page talks to a
+server. Start from a template, and obey the safe CDN rules in
+[web interface](references/web-interface.md): only known hosts, an exact
+version, and an integrity hash that you computed.
+
+| Template | What it is |
+| --- | --- |
+| `assets/web/artifact.html` | One file that opens from the disk. |
+| `assets/web/artifact-htmx.html` | A page that sends its form to a server with htmx. |
+| `assets/web/serve.py` | A server for that page, with the standard library only. |
+
+Look at the artifact in a real browser before you give it to the person.
 
 ## Before you finish
 

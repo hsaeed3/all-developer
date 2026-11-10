@@ -98,14 +98,15 @@ Use [PyO3](https://pyo3.rs/) for the bindings and
 
 ## Web
 
-See [web interface](web-interface.md) for the choice of components. The
-tools:
+See [web interface](web-interface.md) for the two levels. An artifact needs
+no tools: it is one HTML file. An application uses these:
 
 | Job | Tool | Notes |
 | --- | --- | --- |
 | Packages | [pnpm](https://pnpm.io/) | One `pnpm-lock.yaml`. |
 | Development server and build | [Vite](https://vite.dev/) | Shows each change at once. |
-| Language | TypeScript | `strict`, with `noUncheckedIndexedAccess`. |
+| Interface | React with TypeScript | `strict`, with `noUncheckedIndexedAccess`. |
+| Styles and components | Tailwind CSS and [shadcn/ui](https://ui.shadcn.com/) | The kit. |
 | Format and lint | [Biome](https://biomejs.dev/) | One tool for both. |
 | Unit tests | [Vitest](https://vitest.dev/) | |
 | Browser tests | [Playwright](https://playwright.dev/) | See [direct verification](direct-verification.md). |

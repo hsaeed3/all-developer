@@ -1,119 +1,169 @@
 # Web Interface
 
-This guide says what All Developer recommends for a new web interface, and
-how he works on one. The rule from the [design language](design-language.md)
-decides the choice: **every control comes from one kit**, and a change shows
-on the screen at once, so that he can look at the real thing.
+This guide says how All Developer makes a web interface. Two tests decide
+every choice:
 
-## The recommendation
+- **it runs at once:** a person opens it and sees it, and a saved change
+  shows in the browser immediately;
+- **every control comes from one kit** (see the
+  [design language](design-language.md)).
 
-Use **Vite, React and TypeScript, with [Astryx](https://github.com/meta/astryx)
-for the components**.
+There are two levels. Start at the first one. Go to the second one only when
+the work needs it.
 
-- **Vite** starts in about a second and shows each saved change in the
-  browser at once. There is nothing to wait for between a change and the
-  look at it.
-- **Astryx** is the kit: an open source design system from Meta with more
-  than 150 accessible components, theme tokens, a dark mode and page
-  templates. It ships pre-built CSS, so it needs no build plugin.
-- **Astryx is made for agents too.** Its command line tool prints the
-  documentation of each component, so that All Developer reads the real API
-  and does not guess it.
+| Level | What it is | Use it for |
+| --- | --- | --- |
+| 1. An artifact | One HTML file, with htmx when it talks to a server. No build step. | A page, a report, a tool, a prototype, a small application. |
+| 2. An application | React, TypeScript, Vite, Tailwind CSS and shadcn/ui. | Much state in the browser, routing, many components, a team that builds on it. |
 
-Astryx is in beta and needs React 19 or newer. Tell the person this when you
-recommend it.
+## Level 1: an artifact
 
-## Start a project
+An artifact is a file that a person can run. All Developer writes it into the
+project (or where the person asks), and the person opens it. It needs no
+install and no build.
 
-```bash
-pnpm create vite@latest my-app --template react-ts
-```
+### The parts
 
-```bash
-pnpm add @astryxdesign/core @astryxdesign/theme-neutral @stylexjs/stylex
-```
+- **Raw HTML first.** Use the elements of the platform: `<form>`, `<dialog>`,
+  `<details>`, `<table>`, `<button>`. They have keyboard and screen reader
+  behavior that you do not need to write.
+- **One stylesheet from a safe CDN.** [Pico CSS](https://picocss.com/) styles
+  the raw elements, follows the light or dark setting of the person, and
+  changes its look through CSS custom properties. It is the kit.
+- **A small script, in the file,** when the page needs behavior that stays in
+  the browser.
+- **[htmx](https://htmx.org/) when the page talks to a server.** The server
+  answers with a piece of HTML, and an attribute says where it goes. There is
+  no client state to keep, and no build.
 
-```bash
-pnpm add -D @astryxdesign/cli
-```
+### Start from a template
 
-Import the three stylesheets in this order, and wrap the application in the
-theme:
+Copy a template from `assets/web/` of this skill, then change its content.
 
-```css
-@import '@astryxdesign/core/reset.css';
-@import '@astryxdesign/core/astryx.css';
-@import '@astryxdesign/theme-neutral/theme.css';
-```
-
-```tsx
-import {Theme} from '@astryxdesign/core/theme';
-import {neutralTheme} from '@astryxdesign/theme-neutral/built';
-
-export function Providers({children}: {children: React.ReactNode}) {
-  return <Theme theme={neutralTheme}>{children}</Theme>;
-}
-```
-
-Then add the make hooks from `assets/make/web.mk` (see
-[make hooks](make-hooks.md)): `make serve` starts the development server.
-
-## Read the kit before you write
-
-Always run the scoped package name. The short name `astryx` alone, through
-`npx`, is a different package.
+| Template | What it is |
+| --- | --- |
+| `assets/web/artifact.html` | One file that opens from the disk. HTML, Pico CSS and a small script. |
+| `assets/web/artifact-htmx.html` | A page that sends its form to a server with htmx. |
+| `assets/web/serve.py` | A server for that page, with the Python standard library only. It listens only on this computer. |
 
 ```bash
-pnpm exec astryx component --list
+python serve.py
 ```
 
-```bash
-pnpm exec astryx component Button
+Then open `http://127.0.0.1:8000`. For a project in a different language,
+write the same small server with the standard library of that language.
+
+### Safe CDN rules
+
+A file from a CDN runs with the full rights of the page. So every external
+file obeys all of these rules:
+
+- **Only these hosts:** `cdn.jsdelivr.net`, `cdnjs.cloudflare.com` and
+  `unpkg.com`. They serve published packages and do not change a published
+  version.
+- **An exact version** in the address: `htmx.org@2.0.11`, never
+  `htmx.org@2`, `@latest` or no version.
+- **An integrity hash** (`integrity="sha384-..."`) and
+  `crossorigin="anonymous"`. The browser then refuses a file that is not
+  byte for byte the one that you examined.
+- **Compute the hash from the published package.** Do not copy a hash from a
+  page that you cannot verify, and never write one from memory:
+
+  ```bash
+  npm pack htmx.org@2.0.11
+  ```
+
+  ```bash
+  tar -xzf htmx.org-2.0.11.tgz
+  ```
+
+  ```bash
+  openssl dgst -sha384 -binary package/dist/htmx.min.js | openssl base64 -A
+  ```
+
+- **As few files as possible.** One stylesheet, and one script only when the
+  page needs it. No analytics, no fonts from a third host, no script that
+  loads other scripts.
+- **A new version is a decision.** Change the version and its hash together,
+  on purpose, and look at the page again.
+
+The tags that the templates use:
+
+```html
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.min.css"
+  integrity="sha384-L1dWfspMTHU/ApYnFiMz2QID/PlP1xCW9visvBdbEkOLkSSWsP6ZJWhPw6apiXxU"
+  crossorigin="anonymous"
+>
 ```
 
-```bash
-pnpm exec astryx docs tokens
+```html
+<script
+  src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.11/dist/htmx.min.js"
+  integrity="sha384-2OatzQy1H+Zd/IIrjr1TcuDGqLXeHhbooAyJY1KdQMKnr4LZ22k31GBLdYKHmVjg"
+  crossorigin="anonymous"
+></script>
 ```
 
-```bash
-pnpm exec astryx template --list
-```
+If the artifact must work with no network, put the stylesheet and the script
+into the file itself.
 
-- Before you use a component, read its documentation with the command. Do
-  not write its props from memory.
-- Before you write a new component, search the kit for one that exists.
-- Start a page from a template when one fits.
+### Rules for an artifact
 
-## Rules for the interface
+- **Change the look with tokens.** Set the Pico variables (`--pico-*`) and
+  your own custom properties on `:root`. A color or a space on one element is
+  a defect.
+- **Light and dark both work.** Do not set a color for one scheme only.
+- **Escape every value from a person** before it goes into HTML, on the
+  server and in the browser (`textContent`, not `innerHTML`).
+- **A server for an artifact listens on `127.0.0.1` only,** unless the person
+  asks for more.
+- **The page works at phone width** with no horizontal scroll.
+- **State that must stay lives on the server or in a file,** not only in the
+  page.
+- The [UI/UX checklist](ui-ux-checklist.md) applies in full.
 
-- **Use the kit for every control.** Do not write a button, a dialog or a
-  menu by hand when the kit has one.
-- **Change the look with the theme, not with one-off styles.** A theme is a
-  set of token values. A color or a space that is not a token is a defect.
-- **If a component must change, own its source on purpose.** Astryx can copy
-  the source of a component into the project. Do that with the agreement of
-  the person, not as a quiet workaround.
-- **Light and dark come from the tokens.** Do not write a color for one
-  scheme only.
-- **The [UI/UX checklist](ui-ux-checklist.md) applies in full:** keyboard,
-  focus, screen readers, small and large sizes, reduced motion.
+## Level 2: an application
+
+When the work needs an application, use this stack:
+
+| Part | Tool |
+| --- | --- |
+| Packages | [pnpm](https://pnpm.io/) |
+| Development server and build | [Vite](https://vite.dev/) |
+| Interface | [React](https://react.dev/) with TypeScript |
+| Styles | [Tailwind CSS](https://tailwindcss.com/) |
+| Components | [shadcn/ui](https://ui.shadcn.com/), on Radix UI |
+
+- Vite shows each saved change in the browser at once.
+- shadcn/ui is the kit. Its components are copied into the project, so the
+  project owns their source, and their look comes from theme tokens.
+- Start the project with the current instructions of Vite and of shadcn/ui.
+  Read them first: the commands change between versions.
+- Use `strict` TypeScript with `noUncheckedIndexedAccess`. Use `unknown` and
+  real types, never `any`.
+- Add the make hooks from `assets/make/web.mk` (see
+  [make hooks](make-hooks.md)): `make serve` starts the development server.
+- If the project already has a framework, a design system or a component
+  library, use that one. Never add a second kit.
+
+## When to go from level 1 to level 2
+
+Stay at level 1 until one of these is true:
+
+- the page keeps much state in the browser that many parts share;
+- the interface has many screens with routing in the browser;
+- the same components repeat so often that copies of HTML become a risk;
+- the person asks for an application.
+
+Say why when you recommend level 2. Do not start at level 2 because it is
+familiar.
 
 ## Look at it
 
-Keep `make serve` running while you work, and look at each change in a real
-browser with Playwright: both color schemes, a phone width and a desktop
-width, the keyboard path, the console errors. The steps are in
+Open the artifact, or keep `make serve` running, and look at each change in a
+real browser with Playwright: both color schemes, a phone width and a desktop
+width, the keyboard path, the console errors. A wrong integrity hash shows
+there as a console error and a page with no styles. The steps are in
 [direct verification](direct-verification.md).
-
-## When to choose something else
-
-| Situation | Use |
-| --- | --- |
-| The project already has a design system or a component library. | That one. Never add a second kit. |
-| The project already uses Tailwind and wants to own every component. | [shadcn/ui](https://ui.shadcn.com/), which copies component source into the project. Astryx also works beside Tailwind. |
-| One static page with no state. | Plain HTML and CSS, with tokens as CSS custom properties. No build step. |
-| The project needs server rendering or routing by files. | A framework such as Next.js. Astryx works in it with the same three stylesheets. |
-| The project is not React. | The standard kit of that framework. The rules of this guide stay the same. |
-
-Whatever the choice, the two tests stay: the controls come from one kit, and
-a saved change shows in the browser at once.

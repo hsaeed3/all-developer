@@ -34,7 +34,7 @@ convention = "google"
 "tests/*" = ["D103"]
 
 [tool.basedpyright]
-include = ["scripts", "tests", "skills/all-developer/scripts"]
+include = ["scripts", "tests", "skills/all-developer/scripts", "skills/all-developer/assets/web"]
 typeCheckingMode = "standard"
 pythonVersion = "3.10"
 

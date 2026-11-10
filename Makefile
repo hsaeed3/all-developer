@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-sources = scripts tests skills/all-developer/scripts
+sources = scripts tests skills/all-developer/scripts skills/all-developer/assets/web
 uv-run = uv run --no-sync
 
 .PHONY: .uv  ## Make sure that uv is installed

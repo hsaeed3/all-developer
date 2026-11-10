@@ -6,9 +6,11 @@ Run it from the repository root with ``make lint-skill``. It fails when:
 - the front matter of ``SKILL.md`` has no valid ``name`` or ``description``;
 - ``SKILL.md`` has more than 500 lines;
 - a relative link in a Markdown file of the skill leads to no file;
-- a file in ``references/``, ``assets/make/`` or ``scripts/`` of the skill is not named
-  in ``SKILL.md``;
+- a file in ``references/``, ``assets/make/``, ``assets/web/`` or ``scripts/`` of the skill
+  is not named in ``SKILL.md``;
 - a make target in a snippet has no description;
+- an external file in a template of ``assets/web/`` has no safe host, no exact version or
+  no integrity hash;
 - the versions in ``pyproject.toml`` and ``.claude-plugin/plugin.json`` differ.
 
 The script uses only the standard library. It reads files and writes nothing.
@@ -28,6 +30,8 @@ MAXIMUM_DESCRIPTION = 1024
 NAME_PATTERN = re.compile(r"[a-z0-9]+(-[a-z0-9]+)*")
 LINK_PATTERN = re.compile(r"\]\(([^)#\s]+)(?:#[^)]*)?\)")
 FENCE_PATTERN = re.compile(r"^(`{3,})")
+RESOURCE_PATTERN = re.compile(r"<(?:link|script)\b[^>]*>", re.DOTALL)
+SAFE_HOSTS = {"cdn.jsdelivr.net", "cdnjs.cloudflare.com", "unpkg.com"}
 
 
 def front_matter(text: str) -> dict[str, str]:
@@ -94,7 +98,7 @@ def check() -> list[str]:
                     f"{document.relative_to(ROOT)}: the link to {link} leads to no file. "
                     "Correct the path or add the file."
                 )
-    for directory in ("references", "assets/make", "scripts"):
+    for directory in ("references", "assets/make", "assets/web", "scripts"):
         for path in sorted((SKILL / directory).iterdir()):
             if path.is_file() and f"{directory}/{path.name}" not in text:
                 problems.append(
@@ -107,6 +111,24 @@ def check() -> list[str]:
                 problems.append(
                     f"{snippet.relative_to(ROOT)}: the target in '{line}' has no "
                     "description. Add '## ' and what the command does."
+                )
+    for page in sorted((SKILL / "assets" / "web").glob("*.html")):
+        for tag in RESOURCE_PATTERN.findall(page.read_text(encoding="utf-8")):
+            address = re.search(r'(?:href|src)="(https://[^"]+)"', tag)
+            if address is None:
+                continue
+            host = address.group(1).split("/")[2]
+            if (
+                host not in SAFE_HOSTS
+                or not re.search(r"@\d+\.\d+\.\d+/", address.group(1))
+                or 'integrity="sha384-' not in tag
+                or 'crossorigin="anonymous"' not in tag
+            ):
+                problems.append(
+                    f"{page.relative_to(ROOT)}: the file {address.group(1)} is not safe. "
+                    f"Expected a host from {', '.join(sorted(SAFE_HOSTS))}, an exact "
+                    'version, integrity="sha384-..." and crossorigin="anonymous". '
+                    "Correct the tag."
                 )
     project_version = re.search(
         r'^version = "([^"]+)"', (ROOT / "pyproject.toml").read_text(encoding="utf-8"), re.M

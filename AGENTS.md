@@ -15,6 +15,9 @@ Developer apply to work on this repository too: read
 - `skills/all-developer/references/`: one guide for each subject.
 - `skills/all-developer/assets/make/`: the make targets that a hook copies
   into a project.
+- `skills/all-developer/assets/web/`: the templates for runnable artifacts.
+  Every file from a CDN has a safe host, an exact version and an integrity
+  hash that was computed from the published package.
 - `skills/all-developer/scripts/`: the scripts that a hook copies into a
   project. A script uses only the standard library, opens no network
   connection, and says in its docstring what it reads, writes and runs.
@@ -32,7 +35,7 @@ before you ask to commit. Run `make test-terminal` after a change to
 - A rule that is in both versions says the same thing in both. When you
   change a rule in a guide, change it in `ALL-DEVELOPER.md` too, and the
   reverse.
-- Every file in `references/`, `assets/make/` and `scripts/` of the skill is
+- Every file in `references/`, `assets/make/`, `assets/web/` and `scripts/` of the skill is
   named in `SKILL.md`. `make lint-skill` checks this.
 - Every text in this repository obeys the writing rules in
   `skills/all-developer/references/writing.md`.
