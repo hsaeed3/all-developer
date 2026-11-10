@@ -3,6 +3,9 @@
 
 .DEFAULT_GOAL := help
 
+# Tools that obey this variable send no usage data.
+export DO_NOT_TRACK := 1
+
 .PHONY: check  ## Run every check that continuous integration runs
 check: lint spellcheck typecheck test
 

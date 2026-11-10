@@ -150,7 +150,11 @@ These hold in every task. The guides give the details.
    say what you need. Silence is not consent, and a refusal is an answer.
    Never take a different route to the same result because the person did
    not answer or is away. See [working rules](references/working-rules.md).
-8. **PLUS ULTRA means discipline, not more.** Go beyond the minimum in
+8. **Respect the privacy of the person.** Turn off the usage data
+   (telemetry) of every tool that you run or recommend. Send nothing about
+   the person or the project to an outside service that the task does not
+   need. See [working rules](references/working-rules.md).
+9. **PLUS ULTRA means discipline, not more.** Go beyond the minimum in
    correctness, tests, types, docstrings and errors. Then stop. Add nothing
    that the task does not need.
 
@@ -197,6 +201,10 @@ the `Makefile` of the project, and one script in its `scripts/` directory
 when the job needs one. You use nothing else: no other directory, and no
 other way to run the job.
 
+- **Plain `make` shows the help.** In every `Makefile` that you make or
+  change, the default goal is `help`, which lists each command with its
+  description. Plain `make` never builds, installs, deletes or starts
+  anything.
 - **Offer, do not add.** Offer a make hook when you plan new work, or when
   the person asks. Add it only after the person says yes.
 - **Touch only the `Makefile` and `scripts/`.** If the hook needs a tool or a
@@ -212,12 +220,13 @@ The hooks that this skill has:
 
 | Hook | Commands | Snippet |
 | --- | --- | --- |
-| The gate and the list | `make help`, `make check` | `assets/make/base.mk` |
+| The list, the gate, and telemetry off | `make` (the help), `make check` | `assets/make/base.mk` |
 | Python | `make format`, `lint`, `typecheck`, `spellcheck`, `test`, `benchmark` | `assets/make/python.mk` |
 | Rust | `make format`, `lint`, `typecheck`, `test`, `benchmark` | `assets/make/rust.mk` |
 | Python with Rust | `make rebuild-rust`, `lint-rust`, `test-rust`, `lint-all`, `benchmark-release` | `assets/make/python-rust.mk` |
 | Web application | `make serve`, `format`, `lint`, `typecheck`, `test`, `test-browser` | `assets/make/web.mk` |
 | Documentation site | `make docs-build`, `docs-serve` | `assets/make/docs.mk` |
+| A runnable dashboard or application | `make dashboard` (or the name of the application) | `assets/make/app.mk` and `assets/web/app/` |
 | Terminal assets | `make render-assets`, `check-assets`, `install-terminal` | `assets/make/render-assets.mk` and `scripts/render_assets.py` |
 
 **Terminal assets** is the hook that makes pictures and recordings of a
@@ -227,22 +236,30 @@ block, runs `make render-assets`, and the picture shows below the block. The
 full contract is in [make hooks](references/make-hooks.md), and the syntax is
 in [terminal assets](references/terminal-assets.md).
 
-## Artifacts
+## Artifacts, dashboards and applications
 
-When a page helps the person more than text, make a **runnable artifact**:
-one HTML file that the person opens, with no install and no build. Use raw
-HTML, one stylesheet from a safe CDN, and htmx when the page talks to a
-server. Start from a template, and obey the safe CDN rules in
-[web interface](references/web-interface.md): only known hosts, an exact
-version, and an integrity hash that you computed.
+When a page helps the person more than text, make something that **runs**.
+Use raw HTML, one stylesheet from a safe CDN, and htmx when the page talks to
+a server. There is no install and no build.
+
+- **A runnable artifact** is one HTML file that the person opens from the
+  disk. Use it for a report, a prototype or a small tool.
+- **A runnable dashboard or application** is a make hook. The page and a
+  small server with the standard library go into `scripts/<name>/`, and one
+  target starts it: `make dashboard`. Use it when the page shows data of the
+  project (test results, benchmarks, logs) or changes something.
 
 | Template | What it is |
 | --- | --- |
 | `assets/web/artifact.html` | One file that opens from the disk. |
-| `assets/web/artifact-htmx.html` | A page that sends its form to a server with htmx. |
-| `assets/web/serve.py` | A server for that page, with the standard library only. |
+| `assets/web/app/index.html` | A page that talks to its server with htmx. |
+| `assets/web/app/serve.py` | The server for that page. It listens only on this computer. |
+| `assets/make/app.mk` | The target that starts it. |
 
-Look at the artifact in a real browser before you give it to the person.
+Obey the safe CDN rules in [web interface](references/web-interface.md):
+only known hosts, an exact version, and an integrity hash that you computed.
+A page has no analytics and sends no data to another computer. Look at it in
+a real browser before you give it to the person.
 
 ## Before you finish
 

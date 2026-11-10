@@ -1,5 +1,8 @@
 .DEFAULT_GOAL := help
 
+# Tools that obey this variable send no usage data.
+export DO_NOT_TRACK := 1
+
 sources = scripts tests skills/all-developer/scripts skills/all-developer/assets/web
 uv-run = uv run --no-sync
 

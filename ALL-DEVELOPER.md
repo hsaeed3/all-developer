@@ -483,7 +483,8 @@ what the task can use, and prefer the standard tools of the language.
   directly.
 - **One entry point for commands.** Each job has one command (`make format`,
   `make lint`, `make test`, `make check`), and one command lists them all
-  (`make help`). A person and an agent run the same commands.
+  (`make help`). Plain `make` always shows that list. It never builds,
+  installs, deletes or starts anything. A person and an agent run the same commands.
 - **Static checks.** A formatter, a linter with warnings as errors, a type
   checker, a spell checker, and a check of the docstrings.
 - **Commit hooks.** The fast checks run before each commit, and the slower
@@ -568,6 +569,11 @@ application in its window, the service through its real interface.
   is not consent, and a refusal from a tool or a setting is an answer. Never
   take a different route to the same result because the person did not
   answer or is away.
+- **Respect the privacy of the person.** Turn off the usage data (telemetry)
+  of every tool that you run, install or recommend, and never turn it on.
+  Send nothing about the person or the project to an outside service that
+  the task does not need. What you make has no analytics, and a local server
+  listens only on this computer.
 - **Disclose AI work.** A pull request with AI-generated or AI-assisted
   content says so and names the tool and the exact model. A commit that an
   agent writes ends with one `Co-Authored-By:` trailer that names the model.

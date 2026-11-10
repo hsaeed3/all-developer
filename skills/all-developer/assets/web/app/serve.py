@@ -1,20 +1,22 @@
 """
-Serve ``artifact-htmx.html`` and answer its requests, with the standard library only.
+Serve ``index.html`` and answer its requests, with the standard library only.
 
-Run it with ``python serve.py`` and open ``http://127.0.0.1:8000``. The server listens
-only on this computer. Each answer to an htmx request is a piece of HTML, and every value
-from the person is escaped before it goes into that HTML.
+Run it with ``python serve.py`` and open ``http://127.0.0.1:8000``. Set the environment
+variable ``PORT`` to use a different port. The server listens only on this computer. Each
+answer to an htmx request is a piece of HTML, and every value from the person is escaped
+before it goes into that HTML. The server sends no data to another computer.
 """
 
 from __future__ import annotations
 
 import html
 import http.server
+import os
 import pathlib
 import urllib.parse
 
-PAGE = pathlib.Path(__file__).with_name("artifact-htmx.html")
-ADDRESS = ("127.0.0.1", 8000)
+PAGE = pathlib.Path(__file__).with_name("index.html")
+ADDRESS = ("127.0.0.1", int(os.environ.get("PORT", "8000")))
 
 
 class Handler(http.server.BaseHTTPRequestHandler):

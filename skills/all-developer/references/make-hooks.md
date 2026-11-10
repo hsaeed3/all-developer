@@ -8,6 +8,11 @@ integration all run the same command.
 
 ## The contract
 
+0. **Plain `make` shows the help.** The default goal of every `Makefile`
+   that you make or change is `help`. It lists each command with its
+   description. Plain `make` never builds, installs, deletes or starts
+   anything. If a `Makefile` has a different default goal, tell the person
+   and offer to change it. Do not change it without a yes.
 1. **Offer, do not add.** Offer a make hook when you plan new work (see
    [repository management](repository-management.md)), or when the person
    asks for one. Say what the command does and what it needs. Add it only
@@ -40,13 +45,22 @@ Makefile pattern in [repository management](repository-management.md).
 
 | Snippet | Commands | For |
 | --- | --- | --- |
-| `assets/make/base.mk` | `help`, `check` | Every project. |
+| `assets/make/base.mk` | `help` (the default goal), `check`, and `DO_NOT_TRACK=1` for every command | Every project. |
 | `assets/make/python.mk` | `install`, `format`, `lint`, `typecheck`, `spellcheck`, `test`, `test-coverage`, `benchmark`, `rebuild-lockfiles`, `clean` | Python with uv. |
 | `assets/make/rust.mk` | `format`, `lint`, `typecheck`, `test`, `benchmark`, `clean` | Rust with Cargo. |
 | `assets/make/python-rust.mk` | `rebuild-rust`, `rebuild`, `build-release`, `lint-rust`, `test-rust`, `lint-all`, `format-all`, `benchmark-release` | A Python package with a Rust extension. Use it with `python.mk`. |
 | `assets/make/web.mk` | `install`, `serve`, `format`, `lint`, `typecheck`, `test`, `test-browser`, `build`, `clean` | A web interface with pnpm and Vite. |
 | `assets/make/docs.mk` | `docs-build`, `docs-serve` | A documentation site with Zensical. |
+| `assets/make/app.mk` | `dashboard` | A runnable dashboard or application. See [web interface](web-interface.md). |
 | `assets/make/render-assets.mk` | `install-terminal`, `render-assets`, `check-assets` | Pictures of terminal programs. See [terminal assets](terminal-assets.md). |
+
+## Telemetry is off
+
+`base.mk` exports `DO_NOT_TRACK=1`, so every command that `make` runs tells
+its tools to send no usage data. Some tools do not read that variable and
+have their own setting. When you add a hook for such a tool, turn off its
+usage data in the `Makefile` too, and tell the person. See
+[working rules](working-rules.md).
 
 ## What each kind of command does
 

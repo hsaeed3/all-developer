@@ -13,7 +13,7 @@ the work needs it.
 
 | Level | What it is | Use it for |
 | --- | --- | --- |
-| 1. An artifact | One HTML file, with htmx when it talks to a server. No build step. | A page, a report, a tool, a prototype, a small application. |
+| 1. An artifact | One HTML file, or a page with a small server that `make` starts. htmx when it talks to the server. No build step. | A page, a report, a tool, a prototype, a dashboard, a small application. |
 | 2. An application | React, TypeScript, Vite, Tailwind CSS and shadcn/ui. | Much state in the browser, routing, many components, a team that builds on it. |
 
 ## Level 1: an artifact
@@ -43,15 +43,40 @@ Copy a template from `assets/web/` of this skill, then change its content.
 | Template | What it is |
 | --- | --- |
 | `assets/web/artifact.html` | One file that opens from the disk. HTML, Pico CSS and a small script. |
-| `assets/web/artifact-htmx.html` | A page that sends its form to a server with htmx. |
-| `assets/web/serve.py` | A server for that page, with the Python standard library only. It listens only on this computer. |
+| `assets/web/app/index.html` | A page that sends its form to a server with htmx. |
+| `assets/web/app/serve.py` | A server for that page, with the Python standard library only. It listens only on this computer. |
+
+### A dashboard or an application as a make command
+
+When the page shows data of the project or changes something, make it a
+[make hook](make-hooks.md). The person then starts it with one command, and
+it stays in the repository as a tool of the project.
+
+1. Offer it, and say what it adds: one directory in `scripts/` and one
+   target. Wait for a yes, unless the person asked for exactly this.
+2. Copy `assets/web/app/` to `scripts/<name>/`, for example
+   `scripts/dashboard/`. It holds `index.html` and `serve.py`.
+3. Copy the target from `assets/make/app.mk` into the `Makefile`, and give
+   it the name of the application.
+4. Write the page and its answers. The server reads the data of the project
+   (a file of results, a log, a database) and answers with pieces of HTML.
+5. Run it, and look at it in a real browser.
 
 ```bash
-python serve.py
+make dashboard
 ```
 
-Then open `http://127.0.0.1:8000`. For a project in a different language,
-write the same small server with the standard library of that language.
+Then open `http://127.0.0.1:8000`. `PORT=9000 make dashboard` uses a
+different port.
+
+- The server uses only the standard library, so the hook adds no
+  dependency. For a project in a different language, write the same small
+  server with the standard library of that language.
+- The server reads the data on each request. A refresh shows the current
+  state, with no build.
+- Show an empty state and an error state: what the page says when the data
+  file is missing, and what the person can do.
+- Touch only the `Makefile` and `scripts/`.
 
 ### Safe CDN rules
 
@@ -82,8 +107,10 @@ file obeys all of these rules:
   ```
 
 - **As few files as possible.** One stylesheet, and one script only when the
-  page needs it. No analytics, no fonts from a third host, no script that
-  loads other scripts.
+  page needs it. No fonts from a third host, and no script that loads other
+  scripts.
+- **No tracking.** A page has no analytics, no usage data and no request to
+  a host that the person did not agree to.
 - **A new version is a decision.** Change the version and its hash together,
   on purpose, and look at the page again.
 

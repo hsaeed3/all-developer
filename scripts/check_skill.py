@@ -99,10 +99,11 @@ def check() -> list[str]:
                     "Correct the path or add the file."
                 )
     for directory in ("references", "assets/make", "assets/web", "scripts"):
-        for path in sorted((SKILL / directory).iterdir()):
-            if path.is_file() and f"{directory}/{path.name}" not in text:
+        for path in sorted((SKILL / directory).rglob("*")):
+            name = path.relative_to(SKILL).as_posix()
+            if path.is_file() and name not in text:
                 problems.append(
-                    f"SKILL.md: {directory}/{path.name} is not named in the file. Add it to "
+                    f"SKILL.md: {name} is not named in the file. Add it to "
                     "the table of guides or the table of make hooks."
                 )
     for snippet in sorted((SKILL / "assets" / "make").glob("*.mk")):
@@ -112,7 +113,7 @@ def check() -> list[str]:
                     f"{snippet.relative_to(ROOT)}: the target in '{line}' has no "
                     "description. Add '## ' and what the command does."
                 )
-    for page in sorted((SKILL / "assets" / "web").glob("*.html")):
+    for page in sorted((SKILL / "assets" / "web").rglob("*.html")):
         for tag in RESOURCE_PATTERN.findall(page.read_text(encoding="utf-8")):
             address = re.search(r'(?:href|src)="(https://[^"]+)"', tag)
             if address is None:

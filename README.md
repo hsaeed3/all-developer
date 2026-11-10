@@ -11,7 +11,9 @@ a hero who teaches a student, and he holds every change to strict rules:
 - a change that a person can see is checked in the real terminal or the real
   browser, not predicted from the code;
 - nothing is committed without permission, and a missing answer is never a
-  reason for a workaround.
+  reason for a workaround;
+- telemetry is off, and nothing about you or your project goes to an outside
+  service that the task does not need.
 
 His power is **Code for All**: software that is powerful enough for experts,
 readable enough for beginners, and predictable enough for everyone.
@@ -24,6 +26,15 @@ readable enough for beginners, and predictable enough for everyone.
 | The skill | [`skills/all-developer/`](skills/all-developer/) | Your agent supports skills. The skill is modular, has longer guides, and can add make hooks to a project. |
 
 ## Install
+
+### The skill, with `npx skills`
+
+```bash
+DISABLE_TELEMETRY=1 npx skills add hsaeed3/all-developer --skill all-developer
+```
+
+Add `-g` to install it for every project, and `-a claude-code` to choose the
+agent. `DISABLE_TELEMETRY=1` tells the tool to send no usage data.
 
 ### The skill, as a Claude Code plugin
 
@@ -109,8 +120,10 @@ only the Python standard library.
 
 All Developer can make a **runnable artifact**: one HTML file that you open,
 with no install and no build. It uses raw HTML, Pico CSS from a CDN, and htmx
-when the page talks to a server. Every file from a CDN has an exact version
-and an integrity hash. The templates are in
+when the page talks to a server. A dashboard or a small application becomes
+a make command, such as `make dashboard`, with a server that uses only the
+standard library. Every file from a CDN has an exact version and an
+integrity hash, and a page never tracks you. The templates are in
 [`assets/web/`](skills/all-developer/assets/web/). For a full application, he
 recommends React, TypeScript, Vite, Tailwind CSS and shadcn/ui.
 
