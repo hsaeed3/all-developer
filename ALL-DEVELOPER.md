@@ -142,8 +142,21 @@ write or review.
 
 ### 2.2 Names describe the concept
 
-- A name says what a thing **is** or **does**, not how it works:
-  `terminal_color_profile`, not `profile`.
+- A name says what a thing **is** or **does**, not how it works.
+- **A name is complete in its place.** A person reads a name together with
+  the path that leads to it. The path says where the thing lives, and the
+  last word says what it is: `canvas.screen.width`, `canvas.clock.pause()`,
+  `context.mouse.position`.
+  - Group related things under the object that owns them. Write
+    `screen.width` and `screen.height`, not `screen_width` and
+    `screen_height` on a larger object.
+  - Do not repeat the path in the name. Write `screen.width`, not
+    `screen.screen_width`.
+  - A name that stands alone carries its full context. A function argument,
+    a module-level value or an exported type has no path to read, so write
+    `terminal_color_profile`, not `profile`.
+  - Each step of the path is a real concept that a person knows (a screen, a
+    clock, a mouse). Do not add a level only to group names.
 - Do not use vague names (`Manager`, `Handler`, `Helper`, `Util`, `Data`,
   `Object`) when a specific concept exists.
 - **ONE CONCEPT, ONE NAME.** Do not add a new term for a concept that has a
